@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test Service</title>
+</head>
+<body>
+
+    <div id="showContent"></div>
+
+
+    <!-- Jquery CDN -->
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous">
+    </script>
+    <script>
+
+    var soapMessage =
+    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.service.test.com/">'+
+        '<soapenv:Body>'+
+            '<ser:enviaRespuesta>'+
+                    '<TestRequest>'+
+                        '<codigo>200</codigo>'+
+                        '<mensaje>Hola Mundo</mensaje>'+
+                    '</TestRequest>'+
+            '</ser:enviaRespuesta>'+
+        '</soapenv:Body>'+
+    '</soapenv:Envelope>';
+
+    $.ajax({
+        url: "http://localhost:8080/test-project-1.0.0/ServiceTestWS?wsdl",
+        type: "POST",
+        dataType: "xml",
+        data: soapMessage,
+        success: function(response){
+
+            $xmlContent = $(response);
+
+            $("#showContent").html("<h1>"+ $xmlContent.find("mensaje").text() +"</h1><h1>"+ $xmlContent.find("codigo").text() +"</h1>");
+        }
+    });
+
+    </script>
+</body>
+</html>
